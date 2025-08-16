@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BOOart — منصة عرض الصور والتصميمات الفنية</title>
+  <meta name="description" content="منصة BOOart لعرض الأعمال الفنية والصور والتصميمات — ارفع أعمالك، كوّن معرضك، وشارك إبداعك.">
+  <link rel="icon" href="assets/logo.png">
+  <link rel="preload" href="assets/logo.png" as="image" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="assets/logo.png" alt="شعار BOOart" class="logo" />
+        <div class="brand-text">
+          <h1>BOOart</h1>
+          <p class="tagline">منصّة للفن الجميل والروح اللطيفة 👻</p>
+        </div>
+      </div>
+
+      <nav class="top-actions" aria-label="أوامر عليا">
+        <button id="openUpload" class="btn primary">رفع عمل</button>
+        <button id="openAbout" class="btn ghost">عن المنصة</button>
+        <a class="btn link" href="#explore">استكشف</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="controls" aria-label="مرشحات وبحث">
+      <div class="search-wrap">
+        <input id="searchInput" type="search" placeholder="ابحث عن عمل فني… (اسم/وسم/فنان)" aria-label="بحث">
+      </div>
+      <div class="filters">
+        <select id="categoryFilter" aria-label="تصفية حسب الفئة">
+          <option value="">كل الفئات</option>
+          <option>رسم رقمي</option>
+          <option>شعارات</option>
+          <option>تصوير</option>
+          <option>كولاج</option>
+          <option>خلفيات</option>
+          <option>رسوم متحركة</option>
+        </select>
+        <select id="sortSelect" aria-label="فرز">
+          <option value="newest">الأحدث</option>
+          <option value="oldest">الأقدم</option>
+          <option value="az">أ-ي (الاسم)</option>
+          <option value="za">ي-أ (الاسم)</option>
+          <option value="likes">الأعلى إعجابًا</option>
+        </select>
+      </div>
+    </section>
+
+    <section id="explore" class="gallery" aria-live="polite">
+      <!-- البطاقات ستُحقن عبر جافاسكريبت -->
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="" class="logo small" />
+        <strong>BOOart</strong> — منصة عرض الصور والتصميمات الفنية.
+      </div>
+      <div class="footer-links">
+        <a href="#" id="openTerms">الشروط</a>
+        <a href="#" id="openPrivacy">الخصوصية</a>
+        <a href="#" id="exportData">تصدير البيانات</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- نافذة رفع -->
+  <dialog id="uploadDialog" class="modal">
+    <form method="dialog" id="uploadForm" class="modal-card" enctype="multipart/form-data">
+      <header class="modal-header">
+        <h2>رفع عمل فني جديد</h2>
+        <button class="icon-btn" value="cancel" aria-label="إغلاق">✕</button>
+      </header>
+      <div class="modal-body">
+        <div class="grid">
+          <div class="field">
+            <label for="titleInput">عنوان العمل</label>
+            <input id="titleInput" type="text" required />
+          </div>
+          <div class="field">
+            <label for="artistInput">اسم الفنان (اختياري)</label>
+            <input id="artistInput" type="text" />
+          </div>
+          <div class="field">
+            <label for="categoryInput">الفئة</label>
+            <select id="categoryInput">
+              <option>رسم رقمي</option>
+              <option>شعارات</option>
+              <option>تصوير</option>
+              <option>كولاج</option>
+              <option>خلفيات</option>
+              <option>رسوم متحركة</option>
+              <option>أخرى</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="tagsInput">وسوم (مفصولة بفواصل)</label>
+            <input id="tagsInput" type="text" placeholder="فن، تصميم، إبداع" />
+          </div>
+          <div class="field col-2">
+            <label for="descInput">وصف العمل (اختياري)</label>
+            <textarea id="descInput" rows="3"></textarea>
+          </div>
+          <div class="field col-2">
+            <label for="fileInput">اختر ملف الصورة</label>
+            <input id="fileInput" type="file" accept="image/*" required />
+          </div>
+          <div class="preview">
+            <div class="preview-box" id="uploadPreview">
+              <p>ستظهر معاينة الصورة هنا</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button class="btn" value="cancel">إلغاء</button>
+        <button id="saveArtwork" class="btn primary" value="default">حفظ وإضافة</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- عارض صورة -->
+  <dialog id="viewerDialog" class="viewer">
+    <button class="icon-btn close" value="close" aria-label="إغلاق">✕</button>
+    <img id="viewerImg" alt="عمل فني" />
+    <div class="viewer-meta">
+      <h3 id="viewerTitle"></h3>
+      <p id="viewerDesc"></p>
+      <div class="viewer-tags" id="viewerTags"></div>
+      <button id="likeBtn" class="btn small">إعجاب <span id="likeCount">0</span> ♥</button>
+    </div>
+  </dialog>
+
+  <!-- حوارات نصية بسيطة -->
+  <dialog id="textDialog" class="modal">
+    <form method="dialog" class="modal-card">
+      <header class="modal-header">
+        <h2 id="textDialogTitle"></h2>
+        <button class="icon-btn" value="cancel" aria-label="إغلاق">✕</button>
+      </header>
+      <div class="modal-body" id="textDialogBody"></div>
+      <footer class="modal-footer">
+        <button class="btn" value="default">حسنًا</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
